@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 
 using TSLab.DataSource;
 using TSLab.Diagnostics;
@@ -24,7 +23,7 @@ namespace TSLab.Script.Handlers.Options
     /// \~russian Блок управляет виртуальными и реальными позициями. При работе с виртуальными позициями следует использовать только его.
     /// Реальные позиции можно создавать любым способом и блок их увидит при следующем исполнении.
     /// 
-    /// Блок необходимо ставить напосредственно после опционного источника, чтобы он мог правильно проинициализировать виртуальные
+    /// Блок необходимо ставить непосредственно после опционного источника, чтобы он мог правильно проинициализировать виртуальные
     /// позиции до передачи управления в последующие узлы скрипта. В силу особенностей реализации блок является не потоковым, а побарным.
     /// Поэтому для взаимодействия с ним также приходится использовать обработчики побарного типа.
     /// </remarks>
@@ -845,6 +844,40 @@ namespace TSLab.Script.Handlers.Options
                         Context.Log(msg, MessageType.Warning, true);
                         continue;
                     }
+                    else
+                    {
+                        // [2025-11-19] Ветка возникла из желания использовать в одном агенте два опционных источника и,
+                        // соответственно, два менеджера позиций. При этом в старой реализации оба менеджера честно пытаются
+                        // виртуальную позицию создать и у обоих это получается. Что приводит к удвоению объёма виртуальных позиций.
+
+                        bool itIsMySecurity = false;
+                        // 1. Если речь про Базовый Актив...
+                        if (secDesc.Equals(opt.UnderlyingAsset.FinInfo.Security))
+                        {
+                            itIsMySecurity = true;
+                        }
+                        else
+                        {
+                            // 3. Если речь про опцион
+                            foreach (IOptionStrike optStrike in opt.GetStrikes())
+                            {
+                                if (!secDesc.Equals(optStrike))
+                                    continue;
+
+                                // Нашли? Выходим.
+                                itIsMySecurity = true;
+                                break;
+                            }
+                        }
+
+                        // 5. Судьбоносное решение о прекращении исполнения этого метода
+                        if (!itIsMySecurity)
+                        {
+                            // Журналировать не буду, спам ужасный получится.
+                            // Поэтому просто ухожу на следующий круг цикла for
+                            continue;
+                        }
+                    }
 
                     int entryBarIndex = posInfo.EntryBarNum;
                     if (entryBarIndex >= Context.BarsCount - VirtPosShift)
@@ -871,7 +904,7 @@ namespace TSLab.Script.Handlers.Options
         /// <summary>
         /// Восстановить виртуальные позиции опционного источника
         /// </summary>
-        /// <param name="sec">торгуемый источник (одиночный инструмент)</param>
+        /// <param name="source">торгуемый источник (одиночный инструмент)</param>
         /// <param name="virtualPositions">перечень виртуальных позиций</param>
         private void RestoreVirtualPositions(ISecurity source, List<Tuple<SecInfo, PosInfo>> virtualPositions)
         {
@@ -931,6 +964,19 @@ namespace TSLab.Script.Handlers.Options
                             MsgId, secDesc.DsName, secDesc.Name, secDesc.FullName);
                         Context.Log(msg, MessageType.Warning, true);
                         continue;
+                    }
+                    else
+                    {
+                        // [2025-11-19] Ветка возникла из желания использовать в одном агенте два опционных источника и,
+                        // соответственно, два менеджера позиций. При этом в старой реализации оба менеджера честно пытаются
+                        // виртуальную позицию создать и у обоих это получается. Что приводит к удвоению объёма виртуальных позиций.
+
+                        if (!secDesc.Equals(source.FinInfo.Security))
+                        {
+                            // Журналировать не буду, спам ужасный получится.
+                            // Поэтому просто ухожу на следующий круг цикла for
+                            continue;
+                        }
                     }
 
                     int entryBarIndex = posInfo.EntryBarNum;
@@ -2674,7 +2720,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal int CancelVolatility(IContext externalContext, IvTargetInfo ivTarget, string comment)
+        public int CancelVolatility(IContext externalContext, IvTargetInfo ivTarget, string comment)
         {
             // Из практики торговли часто бывает ситуация, что торговля заблокирована, а снять задачу котирования УЖЕ хочется.
             //if (m_blockTrading)
@@ -2703,7 +2749,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal bool TryEstimateEffectiveIv(
+        public bool TryEstimateEffectiveIv(
             SmileInfo originalSmileInfo, IOptionSeries optSer, int lastBarIndex,
             out double effectiveLongIvAtm, out double effectiveShortIvAtm)
         {
@@ -2714,7 +2760,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal bool TryEstimateEffectiveIv(
+        public bool TryEstimateEffectiveIv(
             SmileInfo originalSmileInfo, IOptionSeries optSer, int lastBarIndex,
             out double effectiveLongIvAtm, out double effectiveShortIvAtm,
             out Tuple<ReadOnlyCollection<IPosition>, ReadOnlyCollection<IPosition>>[] longPositions,
