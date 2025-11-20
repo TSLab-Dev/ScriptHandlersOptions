@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+using System.Globalization;
 
 using TSLab.Script.CanvasPane;
 using TSLab.Script.Options;
@@ -248,12 +248,12 @@ namespace TSLab.Script.Handlers.Options
         /// Достраивает дополнительные точки слева за пределами диапазона страйков, существующих на рынке
         /// </summary>
         /// <param name="smileFunc">улыбка</param>
-        /// <param name="xs">таблица исксов</param>
+        /// <param name="xs">таблица иксов</param>
         /// <param name="ys">таблица значений</param>
         /// <param name="maxNonInclusive">максимальная граница (исключая)</param>
         /// <param name="dK">шаг страйков</param>
         /// <param name="returnPct">возвращать ли значения в процентах?</param>
-        internal static void AppendLeftTail(IFunction smileFunc,
+        public static void AppendLeftTail(IFunction smileFunc,
             List<double> xs, List<double> ys, double maxNonInclusive, double dK, bool returnPct)
         {
             for (double k = dK * Math.Round(0.5 * maxNonInclusive / dK); k < maxNonInclusive; k += dK)
@@ -276,12 +276,12 @@ namespace TSLab.Script.Handlers.Options
         /// Достраивает дополнительные точки справа за пределами диапазона страйков, существующих на рынке
         /// </summary>
         /// <param name="smileFunc">улыбка</param>
-        /// <param name="xs">таблица исксов</param>
+        /// <param name="xs">таблица иксов</param>
         /// <param name="ys">таблица значений</param>
         /// <param name="minNonInclusive">минимальная граница (исключая)</param>
         /// <param name="dK">шаг страйков</param>
         /// <param name="returnPct">возвращать ли значения в процентах?</param>
-        internal static void AppendRightTail(IFunction smileFunc,
+        public static void AppendRightTail(IFunction smileFunc,
             List<double> xs, List<double> ys, double minNonInclusive, double dK, bool returnPct)
         {
             double max = dK * Math.Round(1.5 * minNonInclusive / dK);
@@ -326,7 +326,9 @@ namespace TSLab.Script.Handlers.Options
             nodeInfo.CalendarTime = DateTime.Now;
 
             nodeInfo.Symbol = nodeInfo.Security.Symbol;
+            nodeInfo.DSName = nodeInfo.Security.SecurityDescription.DSName;
             nodeInfo.Expired = nodeInfo.Security.SecurityDescription.Expired;
+            nodeInfo.FullName = nodeInfo.Security.SecurityDescription.FullName;
 
             ip.Tag = nodeInfo;
             ip.Color = AlphaColors.Yellow;
@@ -334,8 +336,11 @@ namespace TSLab.Script.Handlers.Options
             ip.Geometry = Geometries.Ellipse;
             ip.DragableMode = DragableMode.None;
             //ip.Value = new System.Windows.Point(sInfo.Strike, nodeInfo.Sigma);
+            // Поскольку цены скорее всего расчетные, показываю на 1 знак больше, чем объявлена точность в инструменте
+            int decim = Math.Max(0, nodeInfo.Security.Decimals + 1);
+            string optPxStr = optPx.ToString("N" + decim, CultureInfo.InvariantCulture);
             ip.Tooltip = String.Format("F:{0}; K:{1}; IV:{2:#0.00}%\r\n{3} {4} @ {5}",
-                f, sInfo.Strike, optSigma * Constants.PctMult, optionType, optPx, DefaultOptQty);
+                f, sInfo.Strike, optSigma * Constants.PctMult, optionType, optPxStr, DefaultOptQty);
         }
     }
 }
