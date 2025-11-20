@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+
 using TSLab.Script.CanvasPane;
 using TSLab.Script.Optimization;
 using TSLab.Script.Options;
@@ -580,7 +580,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="slopeAtm">наклон улыбки в обычных размерных координатах (НЕ в процентах, а в 'сыром' виде)</param>
         /// <param name="shape">форма улыбки (НЕ в процентах, а в 'сыром' виде)</param>
         /// <returns>наклон улыбки в безразмерных координатах (если аргументы невалидны -- вернет в лучшем случае null)</returns>
-        internal static double GetDSigmaDx(double futPx, double dT, double slopeAtm, double shape = 0)
+        public static double GetDSigmaDx(double futPx, double dT, double slopeAtm, double shape = 0)
         {
             double res = slopeAtm * futPx * Math.Pow(dT, DefaultPow + shape);
             return res;
@@ -599,7 +599,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="width">ширина рабочей области (при отрицательном значении ограничение снимается)</param>
         /// <param name="strikePrices">результирующий список точек для расчетов</param>
         /// <returns>true, если массив подготовлен; false, если массив точек подготовить не удалось (например, при невалидных аргументах)</returns>
-        internal static bool TryPrepareImportantPoints(
+        public static bool TryPrepareImportantPoints(
             IOptionStrikePair[] pairs, double futPx, double futStep, double width,
             out SortedDictionary<double, IOptionStrikePair> strikePrices)
         {
