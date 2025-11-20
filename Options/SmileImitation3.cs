@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 
 using TSLab.Script.CanvasPane;
 using TSLab.Script.Optimization;
@@ -358,7 +357,22 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void FillNodeInfo(InteractivePointActive ip,
+        /// <summary>
+        /// \~english Fill interactive point with additional information (put object SmileNodeInfo to property ip.Tag)
+        /// \~russian Заполнить интерактивный узел дополнительной информацией (подготовить объект SmileNodeInfo и положить его в свойство ip.Tag)
+        /// </summary>
+        /// <param name="ip">interactive point</param>
+        /// <param name="f">current price of underlying</param>
+        /// <param name="dT">time to expiry (as fraction of year)</param>
+        /// <param name="sInfo">option strike pair</param>
+        /// <param name="optionType">option type (Call, Put, Any)</param>
+        /// <param name="optPxMode">meaning of this node (Bid, Ask, Mid)</param>
+        /// <param name="optSigma">volatility of this node (NOT AS PERCENT!)</param>
+        /// <param name="returnPct">always put 'false' here (unless you know what are you doing)</param>
+        /// <param name="isVisiblePoints">is this node visible on chart?</param>
+        /// <param name="riskfreeRatePct">risk-free interest rate (use PERCENTS here!)</param>
+        /// <exception cref="ArgumentException"></exception>
+        public static void FillNodeInfo(InteractivePointActive ip,
             double f, double dT, IOptionStrikePair sInfo,
             StrikeType optionType, OptionPxMode optPxMode,
             double optSigma, bool returnPct, bool isVisiblePoints, double riskfreeRatePct)
@@ -367,7 +381,7 @@ namespace TSLab.Script.Handlers.Options
                 throw new ArgumentException("Option type 'Any' is not supported.", "optionType");
 
             bool isCall = (optionType == StrikeType.Call);
-            double optPx = FinMath.GetOptionPrice(f, sInfo.Strike, dT, optSigma, 0, isCall);
+            double optPx = FinMath.GetOptionPrice(f, sInfo.Strike, dT, optSigma, riskfreeRatePct, isCall);
 
             // ReSharper disable once UseObjectOrCollectionInitializer
             SmileNodeInfo nodeInfo = new SmileNodeInfo();
@@ -396,7 +410,7 @@ namespace TSLab.Script.Handlers.Options
             ip.Geometry = Geometries.Ellipse;
             ip.DragableMode = DragableMode.None;
             //ip.Value = new System.Windows.Point(sInfo.Strike, nodeInfo.Sigma);
-            // Поскольку цены скорее всего расчетные, показываю на 1 знак болььше, чем объявлена точность в инструменте
+            // Поскольку цены скорее всего расчетные, показываю на 1 знак больше, чем объявлена точность в инструменте
             int decim = Math.Max(0, nodeInfo.Security.Decimals + 1);
             string optPxStr = optPx.ToString("N" + decim, CultureInfo.InvariantCulture);
             ip.Tooltip = String.Format(CultureInfo.InvariantCulture,
