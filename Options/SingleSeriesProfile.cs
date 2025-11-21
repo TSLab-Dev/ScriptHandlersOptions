@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
+
 using TSLab.Diagnostics;
 using TSLab.Script.CanvasPane;
 using TSLab.Script.Options;
@@ -388,9 +388,9 @@ namespace TSLab.Script.Handlers.Options
         /// В первом элементе живут позиции путов, во втором -- колов.
         /// Индексы синхронизированы с индексами массива pairs.
         /// </summary>
-        internal static Tuple<ReadOnlyCollection<IPosition>, ReadOnlyCollection<IPosition>>[]
+        public static Tuple<ReadOnlyCollection<IPosition>, ReadOnlyCollection<IPosition>>[]
             GetAllOptionPositions(PositionsManager posMan, IOptionStrikePair[] pairs,
-            TotalProfitAlgo profitAlgo = TotalProfitAlgo.AllPositions, bool? isLong = null)
+                TotalProfitAlgo profitAlgo = TotalProfitAlgo.AllPositions, bool? isLong = null)
         {
             Tuple<ReadOnlyCollection<IPosition>, ReadOnlyCollection<IPosition>>[] res =
                 new Tuple<ReadOnlyCollection<IPosition>, ReadOnlyCollection<IPosition>>[pairs.Length];
@@ -408,14 +408,17 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void GetBasePnl(PositionsManager posMan, ISecurity sec, int barNum, double f, out double baseCash, out double basePnl)
+        public static void GetBasePnl(PositionsManager posMan, ISecurity sec, int barNum, double f, out double baseCash, out double basePnl)
         {
             baseCash = 0;
             basePnl = 0;
 
             var positions = posMan.GetClosedOrActiveForBar(sec);
-            foreach (IPosition pos in positions)
+            int len = positions.Count;
+            for (int j = 0; j < len; j++)
             {
+                IPosition pos = positions[j];
+
                 //if (pos.EntrySignalName.StartsWith("CHT-RI-03.", StringComparison.InvariantCultureIgnoreCase))
                 //{
                 //    string str = "";
@@ -535,7 +538,7 @@ namespace TSLab.Script.Handlers.Options
             return pnlIsCorrect;
         }
 
-        internal static bool TryGetPairPnl(PositionsManager posMan, SmileInfo smile, IOptionStrikePair pair,
+        public static bool TryGetPairPnl(PositionsManager posMan, SmileInfo smile, IOptionStrikePair pair,
             double f, double dT, out double cash, out double pnl)
         {
             cash = 0;
@@ -586,7 +589,7 @@ namespace TSLab.Script.Handlers.Options
             return true;
         }
 
-        internal static bool TryGetPairPnl(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair,
+        public static bool TryGetPairPnl(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair,
             double f, double dT, out double cash, out double pnl)
         {
             cash = 0;
@@ -640,7 +643,7 @@ namespace TSLab.Script.Handlers.Options
         /// <summary>
         /// Цена формирования указанной позиции в данном страйке
         /// </summary>
-        internal static bool TryGetPairPrice(double putQty, double callQty, InteractiveSeries smile, IOptionStrikePair pair,
+        public static bool TryGetPairPrice(double putQty, double callQty, InteractiveSeries smile, IOptionStrikePair pair,
             double f, double dT, double riskFreeRate, out double price)
         {
             price = 0;
@@ -795,12 +798,15 @@ namespace TSLab.Script.Handlers.Options
         {
             pnl = 0;
             cash = 0;
-            if (positions.Count == 0)
+            if ((positions == null) || (positions.Count <= 0))
                 return;
 
             // TODO: зарефакторить на использование метода из PositionsManager???
-            foreach (IPosition pos in positions)
+            int len = positions.Count;
+            for (int j = 0; j < len; j++)
             {
+                IPosition pos = positions[j];
+
                 // Пока что State лучше не трогать 
                 //if (pos.PositionState == PositionState.HaveError)
                 {
@@ -841,7 +847,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="isCall">put-false; call-true</param>
         /// <param name="cash">денежные затраты на формирование позы (могут быть отрицательными)</param>
         /// <param name="pnl">текущая цена позиции</param>
-        internal static void GetOptPnl(double qty,
+        public static void GetOptPnl(double qty,
             double f, double k, double dT, double sigma, double r, bool isCall,
             out double cash, out double pnl)
         {
@@ -869,7 +875,7 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Получение сдвинутой в соответствии с парметром algo улыбки.
+        /// Получение сдвинутой в соответствии с параметром algo улыбки.
         /// Для скорости возвращается SmileInfo.
         /// </summary>
         /// <param name="smile">исходная улыбка</param>
@@ -913,7 +919,7 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Получение сдвинутой в соответствии с парметром algo улыбки.
+        /// Получение сдвинутой в соответствии с параметром algo улыбки.
         /// Для общности возвращается InteractiveSeries.
         /// 
         /// Предпочтительно переходить на использование аналогичного метода на базе SmileInfo.
@@ -982,7 +988,7 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Получение сдвинутой в соответствии с парметром algo улыбки.
+        /// Получение сдвинутой в соответствии с параметром algo улыбки.
         /// Для скорости возвращается SmileInfo.
         /// </summary>
         /// <param name="smile">исходная улыбка</param>
@@ -1074,7 +1080,7 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Получение сдвинутой в соответствии с парметром algo улыбки.
+        /// Получение сдвинутой в соответствии с параметром algo улыбки.
         /// Для общности возвращается InteractiveSeries.
         /// 
         /// Предпочтительно переходить на использование аналогичного метода на базе SmileInfo.
@@ -1083,8 +1089,8 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="algo">алгоритм её трансформации</param>
         /// <param name="dSigma">УВЕЛИЧЕНИЕ уровня волатильности (только неотрицательные значения!)</param>
         /// <returns>преобразованная улыбка</returns>
-        [Obsolete("Неэффективный код. Предпочтительно пер1еходить на использование аналогичного метода на базе SmileInfo.")]
-        internal static InteractiveSeries GetRaisedSmile(InteractiveSeries smile, NumericalGreekAlgo algo, double dSigma)
+        [Obsolete("Неэффективный код. Предпочтительно переходить на использование аналогичного метода на базе SmileInfo.")]
+        private static InteractiveSeries GetRaisedSmile(InteractiveSeries smile, NumericalGreekAlgo algo, double dSigma)
         {
             InteractiveSeries res;
             switch (algo)
@@ -1147,14 +1153,14 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Получение сдвинутой в соответствии с парметром algo улыбки.
+        /// Получение сдвинутой в соответствии с параметром algo улыбки.
         /// Для скорости возвращается SmileInfo.
         /// </summary>
         /// <param name="smile">исходная улыбка</param>
         /// <param name="algo">алгоритм её трансформации</param>
         /// <param name="newDt">новое время до экспирации в долях года (только неотрицательные значения!)</param>
         /// <returns>преобразованная улыбка</returns>
-        internal static SmileInfo GetSmileAtTime(SmileInfo smile, NumericalGreekAlgo algo, double newDt)
+        public static SmileInfo GetSmileAtTime(SmileInfo smile, NumericalGreekAlgo algo, double newDt)
         {
             SmileInfo res;
             switch (algo)
@@ -1171,7 +1177,7 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Получение сдвинутой в соответствии с парметром algo улыбки.
+        /// Получение сдвинутой в соответствии с параметром algo улыбки.
         /// Для общности возвращается InteractiveSeries.
         /// 
         /// Предпочтительно переходить на использование аналогичного метода на базе SmileInfo.
@@ -1180,7 +1186,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="algo">алгоритм её трансформации</param>
         /// <param name="newDt">новая цена БА</param>
         /// <returns>преобразованная улыбка</returns>
-        internal static InteractiveSeries GetSmileAtTime(InteractiveSeries smile, NumericalGreekAlgo algo, double newDt)
+        public static InteractiveSeries GetSmileAtTime(InteractiveSeries smile, NumericalGreekAlgo algo, double newDt)
         {
             InteractiveSeries res;
             switch (algo)
@@ -1196,7 +1202,18 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void GetAveragePrice(IList<IPosition> positions, int barNum, bool longPositions, out double avgPx, out double totalQty)
+        /// <summary>
+        /// Вычислить среднюю цену для данного списка позиций.
+        /// Средняя цена вычисляется с учетом комиссий (если в агенте эта информация есть).
+        /// Метод предполагает, что все позиции для одного инструмента.
+        /// Дополнительных проверок не делает.
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="barNum"></param>
+        /// <param name="longPositions"></param>
+        /// <param name="avgPx"></param>
+        /// <param name="totalQty"></param>
+        public static void GetAveragePrice(IList<IPosition> positions, int barNum, bool longPositions, out double avgPx, out double totalQty)
         {
             totalQty = 0;
             avgPx = Double.NaN;
@@ -1241,7 +1258,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetTotalCommission(IList<IPosition> positions, int barNum, bool longPositions, out double commission, out double totalQty)
+        public static void GetTotalCommission(IList<IPosition> positions, int barNum, bool longPositions, out double commission, out double totalQty)
         {
             totalQty = 0;
             commission = 0;
