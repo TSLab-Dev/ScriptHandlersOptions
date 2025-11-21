@@ -519,11 +519,12 @@ namespace TSLab.Script.Handlers.Options
         }
 
         /// <summary>
-        /// Для каждой пары опционов создаётся Tuple.
-        /// В первом элементе живут позиции путов, во втором -- колов.
-        /// Индексы синхронизированы с индексами массива pairs.
+        /// Проверить, что среди списка 'страйков' есть хотя бы один с позициями
+        /// (неважно закрытые позиции или открытые).
+        /// Проверка выполняется на момент последнего бара,
+        /// то есть для момента времени 'сейчас'.
         /// </summary>
-        internal static bool HasAnyOptionPosition(PositionsManager posMan, IEnumerable<IOptionStrike> strikes)
+        public static bool HasAnyOptionPosition(PositionsManager posMan, IEnumerable<IOptionStrike> strikes)
         {
             if (strikes == null)
                 return false;
