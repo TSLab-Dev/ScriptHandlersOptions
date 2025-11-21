@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
+
 using TSLab.Diagnostics;
 using TSLab.Script.CanvasPane;
 using TSLab.Script.Options;
@@ -169,7 +169,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static bool TryEstimateDelta(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
+        public static bool TryEstimateDelta(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dF, double timeToExpiry, out double rawDelta)
         {
@@ -239,7 +239,7 @@ namespace TSLab.Script.Handlers.Options
                 return false;
         }
 
-        internal static void GetBaseDelta(PositionsManager posMan, ISecurity sec, int barNum, double f, out double rawDelta)
+        public static void GetBaseDelta(PositionsManager posMan, ISecurity sec, int barNum, double f, out double rawDelta)
         {
             rawDelta = 0;
 
@@ -265,7 +265,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetPairDelta(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, out double totalDelta)
+        public static void GetPairDelta(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, out double totalDelta)
         {
             totalDelta = 0;
 
@@ -311,7 +311,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetOptDelta(IEnumerable<IPosition> positions,
+        public static void GetOptDelta(IEnumerable<IPosition> positions,
             double f, double k, double dT, double sigma, double r, bool isCall,
             out double delta)
         {

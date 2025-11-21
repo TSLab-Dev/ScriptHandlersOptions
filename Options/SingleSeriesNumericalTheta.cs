@@ -207,7 +207,7 @@ namespace TSLab.Script.Handlers.Options
         /// <summary>
         /// Делим Тету (размерности 'пунктов за год') на число дней в году с учетом конкретного алгоритма расчета времени
         /// </summary>
-        internal static double RescaleThetaToDays(TimeRemainMode tRemainMode, double rawTheta)
+        public static double RescaleThetaToDays(TimeRemainMode tRemainMode, double rawTheta)
         {
             double res;
             switch (tRemainMode)
@@ -244,7 +244,7 @@ namespace TSLab.Script.Handlers.Options
         /// Поэтому полученное сырое значение ещё надо делить на количество дней в году.
         /// (Эквивалентно умножению на интересующий набег времени для получения дифференциала).
         /// </summary>
-        internal static bool TryEstimateTheta(PositionsManager posMan, IOptionStrikePair[] pairs,
+        public static bool TryEstimateTheta(PositionsManager posMan, IOptionStrikePair[] pairs,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double timeToExpiry, double tStep, out double rawTheta)
         {
@@ -333,7 +333,7 @@ namespace TSLab.Script.Handlers.Options
         /// <summary>
         /// Тета опционной пары по формуле Блека-Шолза
         /// </summary>
-        internal static void GetPairTheta(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair,
+        public static void GetPairTheta(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair,
             double f, double dT, out double totalTheta)
         {
             totalTheta = 0;
@@ -383,7 +383,7 @@ namespace TSLab.Script.Handlers.Options
         /// <summary>
         /// Тета опциона по формуле Блека-Шолза
         /// </summary>
-        internal static void GetOptTheta(IEnumerable<IPosition> positions,
+        public static void GetOptTheta(IEnumerable<IPosition> positions,
             double f, double k, double dT, double sigma, double r, bool isCall,
             out double theta)
         {

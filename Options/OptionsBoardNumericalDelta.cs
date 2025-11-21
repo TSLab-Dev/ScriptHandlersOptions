@@ -234,7 +234,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static bool TryEstimateDelta(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
+        public static bool TryEstimateDelta(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dF, double timeToExpiry, double riskFreeRate, out double rawDelta)
         {

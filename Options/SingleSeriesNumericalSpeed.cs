@@ -183,7 +183,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static bool TryEstimateSpeed(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
+        public static bool TryEstimateSpeed(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dF, double timeToExpiry, out double rawSpeed)
         {

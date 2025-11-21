@@ -573,7 +573,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void FillNodeInfo(InteractivePointActive ip,
+        public static void FillNodeInfo(InteractivePointActive ip,
             double f, double dT, IOptionStrikePair sInfo,
             StrikeType optionType, OptionPxMode optPxMode,
             double optSigma, bool returnPct, bool isVisiblePoints, double scaleMult, double riskfreeRatePct)
@@ -618,7 +618,7 @@ namespace TSLab.Script.Handlers.Options
             string optPxStr = optPx.ToString("N" + decim, CultureInfo.InvariantCulture);
             ip.Tooltip = String.Format(CultureInfo.InvariantCulture,
                 " K: {0}; IV: {1:#0.00}%\r\n   {2} px {3}",
-                sInfo.Strike, optSigma * Constants.PctMult, optionType, optPx);
+                sInfo.Strike, optSigma * Constants.PctMult, optionType, optPxStr);
         }
     }
 }

@@ -202,7 +202,7 @@ namespace TSLab.Script.Handlers.Options
         /// Поэтому полученное сырое значение ещё надо делить на 100%.
         /// (Эквивалентно умножению на интересующий набег волы для получения дифференциала).
         /// </summary>
-        internal static bool TryEstimateVega(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
+        public static bool TryEstimateVega(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dSigma, double timeToExpiry, out double rawVega)
         {
@@ -289,7 +289,7 @@ namespace TSLab.Script.Handlers.Options
         /// Поэтому полученное сырое значение ещё надо делить на 100%.
         /// (Эквивалентно умножению на интересующий набег волы для получения дифференциала).
         /// </summary>
-        internal static bool TryEstimateVomma(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
+        public static bool TryEstimateVomma(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dSigma, double timeToExpiry, out double rawVomma)
         {
@@ -396,7 +396,7 @@ namespace TSLab.Script.Handlers.Options
                 return false;
         }
 
-        internal static void GetPairVega(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair,
+        public static void GetPairVega(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair,
             double f, double dT, out double totalVega)
         {
             totalVega = 0;
@@ -443,7 +443,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetOptVega(IEnumerable<IPosition> positions,
+        public static void GetOptVega(IEnumerable<IPosition> positions,
             double f, double k, double dT, double sigma, double r, bool isCall,
             out double vega)
         {

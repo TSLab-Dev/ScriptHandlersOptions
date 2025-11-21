@@ -476,7 +476,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void FillNodeInfoDeribit(InteractivePointActive ip,
+        public static void FillNodeInfoDeribit(InteractivePointActive ip,
             double f, double dT, IOptionStrikePair sInfo,
             StrikeType optionType, OptionPxMode optPxMode,
             double optPx, double optQty, double optSigma, DateTime optTime, bool returnPct, double riskfreeRatePct, double scaleMult)

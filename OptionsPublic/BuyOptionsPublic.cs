@@ -483,7 +483,7 @@ namespace TSLab.Script.Handlers.OptionsPublic
         /// <param name="qty">предполагаемый объём заявки</param>
         /// <param name="optRisk">изменение риска при покупке одного опциона</param>
         /// <returns>максимальное безопасное qty при котором ещё не будет превышен maxRisk</returns>
-        internal static double GetSafeQty(double currentRisk, double maxRisk, double qty, double optRisk)
+        public static double GetSafeQty(double currentRisk, double maxRisk, double qty, double optRisk)
         {
             double targetRisk = currentRisk + qty * optRisk;
 

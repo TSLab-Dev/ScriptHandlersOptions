@@ -215,7 +215,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static bool TryEstimatePrice(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
+        public static bool TryEstimatePrice(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
             InteractiveSeries smile, double f, double timeToExpiry, double riskFreeRate, out double rawPrice)
         {
             rawPrice = Double.NaN;

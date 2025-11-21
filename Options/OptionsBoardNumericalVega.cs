@@ -258,7 +258,7 @@ namespace TSLab.Script.Handlers.Options
         /// Поэтому полученное сырое значение ещё надо делить на 100%.
         /// (Эквивалентно умножению на интересующий набег волы для получения дифференциала).
         /// </summary>
-        internal static bool TryEstimateVega(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
+        public static bool TryEstimateVega(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dSigma, double timeToExpiry, double riskFreeRate, out double rawVega)
         {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 
 using TSLab.Script.CanvasPane;
 using TSLab.Script.Options;
@@ -179,7 +178,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static bool TryEstimateGamma(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
+        public static bool TryEstimateGamma(PositionsManager posMan, IOptionSeries optSer, IOptionStrikePair[] pairs,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double dF, double timeToExpiry, out double rawGamma)
         {
@@ -203,13 +202,13 @@ namespace TSLab.Script.Handlers.Options
             return true;
         }
 
-        internal static void GetBaseGamma(PositionsManager posMan, ISecurity sec, int barNum, double f, out double rawGamma)
+        public static void GetBaseGamma(PositionsManager posMan, ISecurity sec, int barNum, double f, out double rawGamma)
         {
             // гамма БА всегда 0?
             rawGamma = 0;
         }
 
-        internal static void GetPairGamma(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, out double totalGamma)
+        public static void GetPairGamma(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, out double totalGamma)
         {
             totalGamma = 0;
 
@@ -255,7 +254,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetOptGamma(IEnumerable<IPosition> positions,
+        public static void GetOptGamma(IEnumerable<IPosition> positions,
             double f, double k, double dT, double sigma, double r, bool isCall,
             out double gamma)
         {

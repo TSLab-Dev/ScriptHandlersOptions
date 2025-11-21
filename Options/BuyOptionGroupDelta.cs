@@ -613,7 +613,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="minDelta">минимальная рабочая дельта для котирования</param>
         /// <param name="maxDelta">максимальная рабочая дельта для котирования</param>
         /// <param name="checkAbsDelta">проверять дельту по модулю</param>
-        internal static List<IOptionStrikePair> GetFilteredPairs(IOptionSeries optSer, double centralStrike, IFunction callDeltaFunction,
+        public static List<IOptionStrikePair> GetFilteredPairs(IOptionSeries optSer, double centralStrike, IFunction callDeltaFunction,
             double strikeStep, double minDelta, double maxDelta, bool checkAbsDelta)
         {
             List<IOptionStrikePair> orderedPairs;

@@ -65,7 +65,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static InteractiveSeries SelectSmile(int index, params InteractiveSeries[] smiles)
+        public static InteractiveSeries SelectSmile(int index, params InteractiveSeries[] smiles)
         {
             if ((smiles == null) || (smiles.Length <= 0) ||
                 (index < 0) || (smiles.Length <= index))
