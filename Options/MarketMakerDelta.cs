@@ -863,7 +863,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="qty">предполагаемый объём заявки НА ПОКУПКУ</param>
         /// <param name="maxContractsOnStrike">лимит риска на одном страйке (сумма количества лотов без знака)</param>
         /// <returns>максимальное безопасное qty при котором ещё не будет превышен лимит maxContractsOnStrike</returns>
-        internal static double GetSafeQtyToBuyStrike(double putQty, double callQty, double qty, int maxContractsOnStrike)
+        public static double GetSafeQtyToBuyStrike(double putQty, double callQty, double qty, int maxContractsOnStrike)
         {
             int actualQty = 0;
             while ((actualQty < qty) && (Math.Abs(putQty + callQty + actualQty) < maxContractsOnStrike))
@@ -893,7 +893,7 @@ namespace TSLab.Script.Handlers.Options
         /// <param name="qty">предполагаемый объём заявки НА ПРОДАЖУ</param>
         /// <param name="maxContractsOnStrike">лимит риска на одном страйке (сумма количества лотов без знака)</param>
         /// <returns>максимальное безопасное qty при котором ещё не будет превышен лимит maxContractsOnStrike</returns>
-        internal static double GetSafeQtyToSellStrike(double putQty, double callQty, double qty, int maxContractsOnStrike)
+        public static double GetSafeQtyToSellStrike(double putQty, double callQty, double qty, int maxContractsOnStrike)
         {
             int actualQty = 0;
             while ((actualQty < qty) && (Math.Abs(putQty + callQty - actualQty) < maxContractsOnStrike))

@@ -207,7 +207,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void GetBaseGreek(PositionsManager posMan, ISecurity sec, int barNum, double f, Greeks greek, out double rawGreek)
+        public static void GetBaseGreek(PositionsManager posMan, ISecurity sec, int barNum, double f, Greeks greek, out double rawGreek)
         {
             rawGreek = 0;
 
@@ -223,7 +223,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetPairGreek(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, Greeks greek, out double totalGreek)
+        public static void GetPairGreek(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, Greeks greek, out double totalGreek)
         {
             totalGreek = 0;
 
@@ -269,7 +269,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetOptGreek(IEnumerable<IPosition> positions,
+        public static void GetOptGreek(IEnumerable<IPosition> positions,
             double f, double k, double dT, double sigma, double ratePct, bool isCall,
             Greeks greek, out double optGreek)
         {
