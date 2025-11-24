@@ -159,7 +159,7 @@ namespace TSLab.Script.Handlers.Options
             return res;
         }
 
-        internal static void GetBaseDelta(PositionsManager posMan, ISecurity sec, int barNum, double f, out double rawDelta)
+        public static void GetBaseDelta(PositionsManager posMan, ISecurity sec, int barNum, double f, out double rawDelta)
         {
             rawDelta = 0;
 
@@ -180,7 +180,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetPairDelta(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, out double totalDelta)
+        public static void GetPairDelta(PositionsManager posMan, InteractiveSeries smile, IOptionStrikePair pair, double f, double dT, out double totalDelta)
         {
             totalDelta = 0;
 
@@ -226,7 +226,7 @@ namespace TSLab.Script.Handlers.Options
             }
         }
 
-        internal static void GetOptDelta(IEnumerable<IPosition> positions,
+        public static void GetOptDelta(IEnumerable<IPosition> positions,
             double f, double k, double dT, double sigma, double r, bool isCall,
             out double delta)
         {

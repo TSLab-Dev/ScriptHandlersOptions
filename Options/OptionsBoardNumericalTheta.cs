@@ -258,7 +258,7 @@ namespace TSLab.Script.Handlers.Options
         /// Поэтому полученное сырое значение ещё надо делить на количество дней в году.
         /// (Эквивалентно умножению на интересующий набег времени для получения дифференциала).
         /// </summary>
-        internal static bool TryEstimateTheta(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
+        public static bool TryEstimateTheta(double putQty, double callQty, IOptionSeries optSer, IOptionStrikePair pair,
             InteractiveSeries smile, NumericalGreekAlgo greekAlgo,
             double f, double timeToExpiry, double tStep, double riskFreeRate, out double rawTheta)
         {

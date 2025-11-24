@@ -41,16 +41,16 @@ namespace TSLab.Script.Handlers.Options
         private static readonly DateTime s_yearBeg = new DateTime(2017, 1, 1);
         private static readonly DateTime s_yearEnd = new DateTime(2018, 1, 1);
 
-        internal static readonly double DaysInYearPlainCalendar = (s_yearEnd - s_yearBeg).TotalDays;
-        internal static readonly double DaysInYearPlainCalendarWithoutWeekends =
+        public static readonly double DaysInYearPlainCalendar = (s_yearEnd - s_yearBeg).TotalDays;
+        public static readonly double DaysInYearPlainCalendarWithoutWeekends =
             OptionUtils.GetDtWithoutWeekendsSlow(s_yearEnd, s_yearBeg).TotalDays;
-        internal static readonly double DaysInYearPlainCalendarWithoutHolidays =
+        public static readonly double DaysInYearPlainCalendarWithoutHolidays =
             OptionUtils.GetDtWithoutHolidaysSlow(s_yearEnd, s_yearBeg).TotalDays;
         // TODO: Постараться избавиться от этого поля. Для этого нужно переписать функцию вычисления теты.
         //[Obsolete("Постараться избавиться от этого поля. Для этого нужно переписать функцию вычисления теты.")]
-        internal static readonly double DaysInYearRts =
+        public static readonly double DaysInYearRts =
             OptionUtils.GetDtRtsTradingTime21(s_yearEnd, s_yearBeg).DtDays;
-        internal static readonly double DaysInYearLiquidProRts =
+        public static readonly double DaysInYearLiquidProRts =
             OptionUtils.GetLiquidProRtsTradingDaysInYear(s_yearBeg.Year);
 
         private ExpiryMode m_expiryMode = ExpiryMode.FixedExpiry;
