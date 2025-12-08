@@ -354,10 +354,10 @@ namespace TSLab.Script.Handlers.Options
                             //if (info.ContinuousFunction.TryGetValue(f - 100 * futStep, out deltaLeft) &&
                             //    info.ContinuousFunctionD1.TryGetValue(f + 100 * futStep, out deltaRight))
                             {
-                                //int adLeft = (int)Math.Round(deltaLeft);
-                                //int adRight = (int)Math.Round(deltaRight);
-                                ip.Tooltip = String.Format(CultureInfo.InvariantCulture, " {0}\r\n LeftD:{1:0.0}; RightD:{2:0.0}",
-                                    ip.Tooltip, deltaLeft, deltaRight);
+                                string deltaLeftStr = deltaLeft.ToString(m_tooltipFormat, CultureInfo.InvariantCulture);
+                                string deltaRightStr = deltaRight.ToString(m_tooltipFormat, CultureInfo.InvariantCulture);
+                                ip.Tooltip = String.Format(CultureInfo.InvariantCulture, " {0}\r\n LeftD:{1}; RightD:{2}",
+                                    ip.Tooltip, deltaLeftStr, deltaRightStr);
                             }
                         }
                         else
@@ -365,8 +365,8 @@ namespace TSLab.Script.Handlers.Options
                             // Мы передвинули улыбку в точку f и считаем дельту позиции В ЭТОЙ ЖЕ ТОЧКЕ(!)
                             if (info.ContinuousFunctionD1.TryGetValue(f, out actualDelta))
                             {
-                                //int ad = (int)Math.Round(actualDelta);
-                                ip.Tooltip = String.Format(CultureInfo.InvariantCulture, " {0}\r\n D:{1:0.0}", ip.Tooltip, actualDelta);
+                                string actualDeltaStr = actualDelta.ToString(m_tooltipFormat, CultureInfo.InvariantCulture);
+                                ip.Tooltip = String.Format(CultureInfo.InvariantCulture, " {0}\r\n D:{1}", ip.Tooltip, actualDeltaStr);
                             }
                         }
                     }
